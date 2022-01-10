@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 const Worked = () => {
     const [worked, setworked] = useState([]);
     const [checked, setChecked] = useState([]);
+    const [overtime, setOvertime] = useState([]);
+    const [latetime, setLatetime] = useState([]);
     const {id} = useParams();
 
     axios.defaults.baseURL = 'http://localhost:8080/';
@@ -14,6 +16,8 @@ const Worked = () => {
     useEffect(()=>{
         loadWorked();
         loadChecked();
+        loadOvetime();
+        loadLatetime();
     },[])
 
     const loadWorked = async () => {
@@ -24,6 +28,16 @@ const Worked = () => {
     const loadChecked = async () => {
         const result = await axios.get("test/time-keeping/" + id);
         setChecked(result.data)
+        console.log(result.data)
+    }
+    const loadOvetime = async () => {
+        const result = await axios.get("test/over-time/" + id);
+        setOvertime(result.data.data)
+        console.log(result.data)
+    }
+    const loadLatetime = async () => {
+        const result = await axios.get("test/late-time/" + id);
+        setLatetime(result.data.data)
         console.log(result.data)
     }
     const total = ()=>{
@@ -81,6 +95,52 @@ const Worked = () => {
                                 <td>{check.name} </td>
                                 <td>{check.check_in} </td>
                                 <td>{check.check_out} </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+                </table>
+
+                <h1>Over-time</h1>
+            <table class="table border shadow">
+                <thead class="thead-dark">
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Day</th>
+                    <th scope="col">Wout-out-time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { overtime.map((over, index) => (
+                            <tr>
+                                <th scope="row">{index + 1}</th>
+                                <td>{over.name} </td>
+                                <td>{over.day} </td>
+                                <td>{over.work} h</td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+                </table>
+
+                <h1>Late-time</h1>
+            <table class="table border shadow">
+                <thead class="thead-dark">
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Day</th>
+                    <th scope="col">Time Late</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { latetime.map((late, index) => (
+                            <tr>
+                                <th scope="row">{index + 1}</th>
+                                <td>{late.name} </td>
+                                <td>{late.day} </td>
+                                <td>{late.work} h </td>
                             </tr>
                         ))
                     }

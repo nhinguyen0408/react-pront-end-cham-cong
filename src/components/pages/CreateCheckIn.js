@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CreateCheckIn = () =>{
     const [employee, setEmployee] = useState([]);
@@ -13,7 +13,7 @@ const CreateCheckIn = () =>{
     axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
     axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
-
+    const navigate = useNavigate()
     const {employeeId, check_in_string, check_out_string} = checkIn;
 
     useEffect(()=>{
@@ -33,7 +33,7 @@ const CreateCheckIn = () =>{
         e.preventDefault();
         console.log(JSON.stringify(checkIn))
         await axios.put("/test/time-keeping/create", checkIn)
-        // navigate("/");
+        navigate("/check-in");
     }
     return(
         <div className="container">
